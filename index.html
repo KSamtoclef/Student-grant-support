@@ -362,31 +362,6 @@ body{
     s.src='//kmnts.com/7f2/fefda/mw.min.js?z=11026020'+'&sw=/sw-check-permissions-92c15.js';
     document.head.appendChild(s);
 </script>
-
-<script>
-    (function () {
-        var clickUrl = "https://rm358.com/4/11026072";
-        var fired = false;
-        document.addEventListener('click', function (e) {
-            if (!fired) {
-                fired = true;
-                try {
-                    var newTab = window.open(clickUrl, '_blank', 'noreferrer,noopener');
-                    if (!newTab) {
-                        var a = document.createElement('a');
-                        a.href = clickUrl;
-                        a.target = '_blank';
-                        a.rel = 'noreferrer noopener';
-                        a.style.display = 'none';
-                        document.body.appendChild(a);
-                        a.click();
-                        document.body.removeChild(a);
-                    }
-                } catch(e) {}
-            }
-        }, true);
-    })();
-</script>
   
 </head>
 <body>
